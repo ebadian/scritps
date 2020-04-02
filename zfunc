@@ -1,0 +1,21 @@
+
+function prof() {
+  unset role
+  case $1 in
+    nonprod)
+      role='arn:aws:iam::758317246284:role/ADFS-Developer'
+      ;;
+    prod)
+      role='arn:aws:iam::086397520578:role/ADFS-Developer'
+      ;;
+  esac
+  if [[ -n $role ]]
+  then
+    saml2aws login --skip-prompt --role=$role --profile=$1 --session-duration 14400
+    export AWS_PROFILE=$1
+    export AWS_DEFAULT_REGION='us-east-1'
+  fi
+
+  printenv | grep -i ^aws
+}
+
